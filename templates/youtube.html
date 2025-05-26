@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Downloader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+      select, input[type=text], button { padding: 10px; font-size: 16px; margin: 8px; }
+      video { max-width: 100%; height: auto; margin: 20px 0; }
+      .error { color: red; }
+      a { text-decoration: none; color: #333; }
+    </style>
+</head>
+<body>
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  {% if info %}
+    <h2>{{ info.title }}</h2>
+
+    <video controls>
+      <source src="{{ info.url }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <form method="post">
+      <input type="hidden" name="url" value="{{ info.webpage_url }}">
+
+      <label for="format">Choose format:</label>
+      <select id="format" name="format" required>
+        <option value="mp4">Video (mp4)</option>
+        <option value="mp3">Audio (mp3)</option>
+      </select><br>
+
+      <label for="quality">Choose quality:</label>
+      <select id="quality" name="quality" required>
+        {% for q in video_qualities %}
+          <option value="{{ q }}">{{ q }}p</option>
+        {% endfor %}
+      </select><br>
+
+      <button type="submit">Download</button>
+    </form>
+
+  {% else %}
+    <h2>YouTube Video Downloader</h2>
+    <form method="post">
+      <input type="text" name="url" placeholder="Paste YouTube URL" required style="width:300px;">
+      <br>
+      <button type="submit">Get Video Info</button>
+    </form>
+  {% endif %}
+
+  <br><a href="/">← Back to Home</a>
+
+</body>
+</html>
